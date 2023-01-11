@@ -1,5 +1,7 @@
 package com.teste.TesteBackend.modules.endereco;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.teste.TesteBackend.modules.endereco.enums.TipoEnderco;
 import com.teste.TesteBackend.modules.pessoa.Pessoa;
 
@@ -7,6 +9,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,9 +37,14 @@ public class Endereco {
     @Column(name = "tipo_endereco")
     private TipoEnderco tipo;
 
-    @ManyToOne
-    @JoinColumn(name = "id_pessoa", foreignKey = @ForeignKey(name="fk_pessoa_endereço"))
+    @ManyToOne(fetch = FetchType.LAZY)
+    // @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JoinColumn(name = "id_pessoa", foreignKey = @ForeignKey(name = "pessoa_endereco"))
     private Pessoa pessoa;
+
+    // @ManyToOne
+    // @JoinColumn(name = "id_pessoa", foreignKey = @ForeignKey(name="fk_pessoa_endereço"))
+    // private Pessoa pessoa;
 
     @Column(name = "logradouro")
     private String logradouro;
