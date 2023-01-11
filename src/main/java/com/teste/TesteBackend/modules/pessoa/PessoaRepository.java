@@ -1,5 +1,7 @@
 package com.teste.TesteBackend.modules.pessoa;
 
-public interface PessoaRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
     
 }
