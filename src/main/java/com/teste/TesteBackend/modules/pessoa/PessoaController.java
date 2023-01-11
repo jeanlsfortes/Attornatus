@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,58 +30,54 @@ public class PessoaController {
     private EnderecoService enderecoService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Pessoa criar(@RequestBody Pessoa pessoa) {
-        return pessoaRepository.save(pessoa);
+    public ResponseEntity<Pessoa> criar(@RequestBody Pessoa pessoa) {
+        return ((BodyBuilder) ResponseEntity.ok(HttpStatus.CREATED)).body(pessoaRepository.save(pessoa));
     }
 
     @PutMapping("/{id}")
     public void editar(@PathVariable Long id, @RequestBody Pessoa pessoa) {
         pessoaRepository.findById(id).map(pessoaAntiga -> {
-            if (!enderecoService.verificarCondicaoEndereço(pessoa.getEnderecos())) {
+            if (!enderecoService.verificarCondicaoEndereço(pessoa.getEndereco())) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         "Não foi possivel atualizar a pessoa pois existe mais de um endereço principal");
             }
             pessoaAntiga.setId(pessoa.getId());
             pessoaAntiga.setNome(pessoa.getNome());
             pessoaAntiga.setDataNascimento(pessoa.getDataNascimento());
-            pessoaAntiga.setEnderecos(pessoa.getEnderecos());
+            pessoaAntiga.setEndereco(pessoa.getEndereco());
             pessoaRepository.save(pessoaAntiga);
-            return pessoaAntiga;
+            return ResponseEntity.ok().body(pessoa.getEndereco());
         }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa Não Encontrada"));
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Pessoa consultar(@PathVariable Long id) {
-        return pessoaRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa Não Encontrada"));
+    public ResponseEntity<Pessoa> consultar(@PathVariable Long id) {
+        return ResponseEntity.ok(pessoaRepository.findById(id)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa Não Encontrada")));   
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<Pessoa> listar() {
-        return pessoaRepository.findAll();
+    public ResponseEntity<List<Pessoa>> listar() {
+        return ResponseEntity.ok(pessoaRepository.findAll());
     }
 
     @GetMapping("/listar-enderecos/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Endereco> pessoalistarEnderecos(@PathVariable Long id) {
+    public ResponseEntity<List<Endereco>> pessoalistarEnderecos(@PathVariable Long id) {
         Pessoa pessoa = pessoaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa Não Encontrada"));
-        if(pessoa.getEnderecos() == null){
+        if(pessoa.getEndereco() == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Essa pessoa Não tem endereços cadastrados");
         }
-        return pessoa.getEnderecos();
+        return ResponseEntity.ok().body(pessoa.getEndereco());
     }
 
     @GetMapping("/endereco-principal/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Endereco pessoaEnderecoPrincipal(@PathVariable Long id) {
+    public ResponseEntity<Endereco> pessoaEnderecoPrincipal(@PathVariable Long id) {
         Pessoa pessoa = pessoaRepository.findById(id).orElse(null);
-        if(pessoa != null){
-            return enderecoService.getEnderecoPrincipal(pessoa);
-        }else{
+        if(pessoa == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa Não Encontrada"); 
+        }else{
+            return ResponseEntity.ok(enderecoService.getEnderecoPrincipal(pessoa));
         }
         
 

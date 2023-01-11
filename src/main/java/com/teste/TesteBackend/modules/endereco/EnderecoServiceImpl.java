@@ -8,7 +8,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.teste.TesteBackend.modules.endereco.enums.TipoEnderco;
 import com.teste.TesteBackend.modules.pessoa.Pessoa;
-import com.teste.TesteBackend.modules.pessoa.PessoaRepository;
 
 @Service
 public class EnderecoServiceImpl implements EnderecoService {
@@ -30,7 +29,7 @@ public class EnderecoServiceImpl implements EnderecoService {
 
     @Override
     public Endereco getEnderecoPrincipal(Pessoa pessoa) {
-        for(Endereco endereco : pessoa.getEnderecos()){
+        for(Endereco endereco : pessoa.getEndereco()){
             if(endereco.getTipo() == TipoEnderco.P){
                 return endereco;
             }

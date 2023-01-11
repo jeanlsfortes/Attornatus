@@ -40,6 +40,6 @@ public class Pessoa {
 
     @JsonIgnore
     @OneToMany(mappedBy = "pessoa", fetch = FetchType.LAZY)
-    private List<Endereco> enderecos;
+    private List<Endereco> endereco;
 
 }
