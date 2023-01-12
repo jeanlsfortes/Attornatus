@@ -13,11 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.teste.TesteBackend.modules.endereco.Endereco;
 import com.teste.TesteBackend.modules.endereco.EnderecoService;
 
 @RestController
@@ -61,25 +59,4 @@ public class PessoaController {
         return ResponseEntity.ok(pessoaRepository.findAll());
     }
 
-    @GetMapping("/listar-enderecos/{id}")
-    public ResponseEntity<List<Endereco>> pessoalistarEnderecos(@PathVariable Long id) {
-        Pessoa pessoa = pessoaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa Não Encontrada"));
-        if(pessoa.getEndereco() == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Essa pessoa Não tem endereços cadastrados");
-        }
-        return ResponseEntity.ok().body(pessoa.getEndereco());
-    }
-
-    @GetMapping("/endereco-principal/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Endereco> pessoaEnderecoPrincipal(@PathVariable Long id) {
-        Pessoa pessoa = pessoaRepository.findById(id).orElse(null);
-        if(pessoa == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa Não Encontrada"); 
-        }else{
-            return ResponseEntity.ok(enderecoService.getEnderecoPrincipal(pessoa));
-        }
-        
-
-    }
 }

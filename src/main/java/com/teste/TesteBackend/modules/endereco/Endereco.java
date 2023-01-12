@@ -21,9 +21,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Entity
 @Table(name = "endereco")
 public class Endereco {
@@ -37,14 +37,12 @@ public class Endereco {
     @Column(name = "tipo_endereco")
     private TipoEnderco tipo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    // @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JoinColumn(name = "id_pessoa", foreignKey = @ForeignKey(name = "pessoa_endereco"))
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JoinColumn(name = "id_pessoa", foreignKey = @ForeignKey(name = "fk_pessoa_endereco"))
     private Pessoa pessoa;
 
-    // @ManyToOne
-    // @JoinColumn(name = "id_pessoa", foreignKey = @ForeignKey(name="fk_pessoa_endereço"))
-    // private Pessoa pessoa;
+ 
 
     @Column(name = "logradouro")
     private String logradouro;
