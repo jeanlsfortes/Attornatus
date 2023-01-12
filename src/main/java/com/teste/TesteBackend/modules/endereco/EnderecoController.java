@@ -7,25 +7,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.teste.TesteBackend.modules.endereco.enums.TipoEnderco;
-import com.teste.TesteBackend.modules.pessoa.Pessoa;
-import com.teste.TesteBackend.modules.pessoa.PessoaRepository;
-
-
 
 @RestController
 @RequestMapping("/api/endereco")
 public class EnderecoController {
 
     @Autowired
-    private PessoaRepository pessoaRepository;
-
-    @Autowired
     private EnderecoRepository enderecoRepository;
+
+    @PostMapping("/id")
+    public ResponseEntity<Endereco> criarEndereco(@PathVariable Long id, @RequestBody Endereco endereco) {
+        if((enderecoRepository.findByPessoaIdAndTipo(id,TipoEnderco.P) != null) && (endereco.getTipo() == TipoEnderco.P)){
+            throw  new ResponseStatusException(HttpStatus.NOT_FOUND,"Não é possível Criar esse endereço, pois já existe um endereço principal vinculado a essa pessoa");
+        }
+        return ResponseEntity.ok().body(enderecoRepository.save(endereco));
+    }
 
     @GetMapping("/pessoa/{id}")
     public ResponseEntity <List<Endereco>> listarEnderecosPessoa(@PathVariable long id) {

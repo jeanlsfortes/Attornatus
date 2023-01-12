@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.teste.TesteBackend.modules.endereco.EnderecoService;
 
 @RestController
 @RequestMapping("/api/pessoa")
@@ -25,24 +24,22 @@ public class PessoaController {
     @Autowired
     private PessoaRepository pessoaRepository;
 
-    private EnderecoService enderecoService;
-
     @PostMapping
     public ResponseEntity<Pessoa> criar(@RequestBody Pessoa pessoa) {
-        return ((BodyBuilder) ResponseEntity.ok(HttpStatus.CREATED)).body(pessoaRepository.save(pessoa));
+        // if(){
+
+        // }
+        return ResponseEntity.ok().body(pessoaRepository.save(pessoa));
     }
 
     @PutMapping("/{id}")
     public void editar(@PathVariable Long id, @RequestBody Pessoa pessoa) {
         pessoaRepository.findById(id).map(pessoaAntiga -> {
-            if (!enderecoService.verificarCondicaoEndereço(pessoa.getEndereco())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        "Não foi possivel atualizar a pessoa pois existe mais de um endereço principal");
-            }
+
             pessoaAntiga.setId(pessoa.getId());
             pessoaAntiga.setNome(pessoa.getNome());
             pessoaAntiga.setDataNascimento(pessoa.getDataNascimento());
-            pessoaAntiga.setEndereco(pessoa.getEndereco());
+            // pessoaAntiga.setEndereco(pessoa.getEndereco());
             pessoaRepository.save(pessoaAntiga);
             return ResponseEntity.ok().body(pessoa.getEndereco());
         }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa Não Encontrada"));
