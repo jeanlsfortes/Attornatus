@@ -1,4 +1,27 @@
-# Attornatus
+# Teste Attornatus
 Spring boot, API simples para gerenciar Pessoas.
 
-![image](https://user-images.githubusercontent.com/67402140/212134479-d58598ff-9e68-4df8-8b18-0397f31bbce0.png)
+Usando Spring boot, crie uma API simples para gerenciar Pessoas. Esta API deve permitir:  
+Criar uma pessoa
+Editar uma pessoa
+Consultar uma pessoa
+Listar pessoas
+Criar endereço para pessoa
+Listar endereços da pessoa
+Poder informar qual endereço é o principal da pessoa  
+
+Uma Pessoa deve ter os seguintes campos:
+- Nome
+- Data de nascimento
+- Endereço
+
+Endereço
+-   Logradouro
+-   CEP
+-   Número
+-   Cidade
+
+Requisitos  
+Todas as respostas da API devem ser JSON  
+Banco de dados H2
+
