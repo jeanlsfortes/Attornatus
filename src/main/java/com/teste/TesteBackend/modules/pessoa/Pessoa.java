@@ -3,8 +3,6 @@ package com.teste.TesteBackend.modules.pessoa;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.Comment;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.teste.TesteBackend.modules.endereco.Endereco;
 
