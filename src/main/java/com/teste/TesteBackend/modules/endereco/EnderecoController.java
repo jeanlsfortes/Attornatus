@@ -22,9 +22,9 @@ public class EnderecoController {
     @Autowired
     private EnderecoRepository enderecoRepository;
 
-    @PostMapping("/{id}")
-    public ResponseEntity<Endereco> criarEndereco(@PathVariable Long id, @RequestBody Endereco endereco) {
-        if((enderecoRepository.findByPessoaIdAndTipo(id,TipoEnderco.P) != null) && (endereco.getTipo() == TipoEnderco.P)){
+    @PostMapping
+    public ResponseEntity<Endereco> criarEndereco( @RequestBody Endereco endereco) {
+        if((endereco.getTipo() == TipoEnderco.P)){
             throw  new ResponseStatusException(HttpStatus.NOT_FOUND,"Não é possível Criar esse endereço, pois já existe um endereço principal vinculado a essa pessoa");
         }
         return ResponseEntity.ok().body(enderecoRepository.save(endereco));
