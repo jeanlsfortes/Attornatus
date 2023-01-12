@@ -22,7 +22,7 @@ public class EnderecoController {
     @Autowired
     private EnderecoRepository enderecoRepository;
 
-    @PostMapping("/id")
+    @PostMapping("/{id}")
     public ResponseEntity<Endereco> criarEndereco(@PathVariable Long id, @RequestBody Endereco endereco) {
         if((enderecoRepository.findByPessoaIdAndTipo(id,TipoEnderco.P) != null) && (endereco.getTipo() == TipoEnderco.P)){
             throw  new ResponseStatusException(HttpStatus.NOT_FOUND,"Não é possível Criar esse endereço, pois já existe um endereço principal vinculado a essa pessoa");
@@ -38,8 +38,7 @@ public class EnderecoController {
         if(enderecos == null){
                 throw  new ResponseStatusException(HttpStatus.NOT_FOUND,"Endereco não encontrado");
         }
-        return ResponseEntity.ok().body(enderecos);
-        
+        return ResponseEntity.ok().body(enderecos);  
     }
 
     @GetMapping("/principal/pessoa/{id}")
@@ -51,7 +50,5 @@ public class EnderecoController {
                 throw  new ResponseStatusException(HttpStatus.NOT_FOUND,"Endereco Principal não encontrado");
         }
         return ResponseEntity.ok().body(enderecos);
-        
     }
-
 }

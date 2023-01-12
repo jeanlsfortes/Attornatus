@@ -42,8 +42,6 @@ public class Endereco {
     @JoinColumn(name = "id_pessoa", foreignKey = @ForeignKey(name = "fk_pessoa_endereco"))
     private Pessoa pessoa;
 
- 
-
     @Column(name = "logradouro")
     private String logradouro;
 
@@ -55,5 +53,4 @@ public class Endereco {
 
     @Column(name = "cidade")
     private String cidade;
-
 }

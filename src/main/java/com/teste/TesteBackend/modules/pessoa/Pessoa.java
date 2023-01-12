@@ -3,6 +3,8 @@ package com.teste.TesteBackend.modules.pessoa;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.annotations.Comment;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.teste.TesteBackend.modules.endereco.Endereco;
 
@@ -28,7 +30,8 @@ import lombok.NoArgsConstructor;
 public class Pessoa {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Long id;
 
     @Column(name = "nome")
@@ -41,5 +44,4 @@ public class Pessoa {
     @JsonIgnore
     @OneToMany(mappedBy = "pessoa", fetch = FetchType.LAZY)
     private List<Endereco> endereco;
-
 }
