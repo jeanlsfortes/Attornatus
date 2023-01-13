@@ -30,11 +30,10 @@ public class PessoaController {
     @PutMapping("/{id}")
     public ResponseEntity<Pessoa> editar(@PathVariable Long id, @RequestBody Pessoa pessoa) {
         return pessoaRepository.findById(id).map(pessoaAntiga -> {
-            pessoaAntiga.setId(pessoa.getId());
             pessoaAntiga.setNome(pessoa.getNome());
             pessoaAntiga.setDataNascimento(pessoa.getDataNascimento());
             pessoaRepository.save(pessoaAntiga);
-            return ResponseEntity.ok().body(pessoa);
+            return ResponseEntity.ok().body(pessoaAntiga);
         }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa Não Encontrada"));
     }
 
