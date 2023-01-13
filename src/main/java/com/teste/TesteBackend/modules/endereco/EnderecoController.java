@@ -27,6 +27,9 @@ public class EnderecoController {
         if((endereco.getTipo() == TipoEnderco.P)){
             throw  new ResponseStatusException(HttpStatus.NOT_FOUND,"Não é possível Criar esse endereço, pois já existe um endereço principal vinculado a essa pessoa");
         }
+        if(endereco.getTipo() == null){
+            throw  new ResponseStatusException(HttpStatus.NOT_FOUND,"Não é possível Criar esse endereço, pois o tipo do enderço não foi identificado");
+        }
         return ResponseEntity.ok().body(enderecoRepository.save(endereco));
     }
 
